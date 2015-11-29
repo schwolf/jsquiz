@@ -76,21 +76,12 @@
 			</div>
 		</nav>
 
-		<div class="panel panel-default">
-			<div class="panel-heading">
-				<h3 class="panel-title">Quiz #todo</h3>
-			</div>
-			<div class="panel-body" id="explanation"></div>
-		</div>
+		<div id="app"></div>
+			
 
-		<div class="panel panel-default">
-			<div class="panel-heading">
-				<h3 class="panel-title">Test code</h3>
-			</div>
-			<div class="panel-body">
-				<pre id="readOnlyEditor"></pre>
-			</div>
-		</div>
+		<!--
+
+		
 
 		<div class="panel panel-default">
 			<div class="panel-heading">
@@ -105,13 +96,22 @@
 		<button class="btn btn-default" type="button" onclick="initQuiz();">Reset</button>
 		<button class="btn btn-default" type="button" onclick="previous()">&lt; Prev</button>
 		<button class="btn btn-default" type="button" onclick="next();">Next &gt; </button>
-		<div role="alert" class="alert" style="visibility:hidden"></div>
+		<div role="alert" class="alert" style="visibility:hidden"></div>-->
 
 	</div>
 	<!-- bootstrap.min.js omitted for now ... -->
-
+	
+	<!-- note that this has to be on the end -->
+    <script src="jspm_packages/system.js"></script>
+    <script src="config.js"></script>
+    <script>
+        System.import('index');
+    </script>
+	
 	<script src="https://cdn.jsdelivr.net/ace/1.2.1/min/ace.js" type="text/javascript" charset="utf-8"></script>
 	<script src="quizzes.js" type="text/javascript"></script>
 	<script src="index.js" type="text/javascript"></script>
+	
+	
 	
 </body></html>

@@ -1,0 +1,22 @@
+{
+  "name": "jsquiz",
+  "version": "1.0.0",
+  "description": "",
+  "main": "jsQuiz.html",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/schwolf/jsquiz.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/schwolf/jsquiz/issues"
+  },
+  "homepage": "https://github.com/schwolf/jsquiz#readme",
+  "devDependencies": {
+    "jspm": "^0.16.15"
+  }
+}

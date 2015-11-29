@@ -1,4 +1,4 @@
-var quizzes = [{
+export default [{
 	explanation: 'Write a function that merges the properties of an arbitrary number of objects to one object.',
 	initialCode: 'function merge(root) \ {\n\tfor ( var i = 1; i < arguments.length; i++ )\n\t\tfor ( var key in arguments[i] )\n\troot[key] = arguments[i][key];\n\treturn root;\n}',
 	act: "var merged = merge({name: 'Wolfgang'}, {city: 'Nuernberg'});",
@@ -11,7 +11,7 @@ var quizzes = [{
 		}],
 	takeaway: "The arguments object is a very flexible way to handle values that are passed into a function. It is available in every function and contains all passed arguments. Note that arguments is similar (it has a length property) but not equal to an array (no other properties except of array)."
 }, {
-		explanation: "Create an object literal 'foo' with a function property 'isCalledInGlobalContext' that checks if the context is global and returns different results depending on the way it is called.",
+		explanation: "Create an object literal 'foo' containing a function 'isCalledInGlobalContext' that checks if the context is global and returns different results depending on the way it is called.",
 		initialCode: 'var foo = {\n\tisCalledInGlobalContext: function() {\n\t\t return this === window;\n\t}\n};',
 		act: "var result1 = foo.isCalledInGlobalContext();\nvar fx = foo.isCalledInGlobalContext, result2 = fx();",
 		asserts: [{
