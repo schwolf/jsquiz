@@ -4,7 +4,7 @@ import React from 'react';
 import Explantion from './Explantion.jsx!'
 import AceEditor from './AceEditor.jsx!'
 import ButtonRun from './ButtonRun.jsx!'
-import ButtonReset from './ButtonReset.jsx!'
+import ButtonReset from './ButtonReset.jsx!'index
 import ButtonPrev from './ButtonPrev.jsx!'
 import ButtonNext from './ButtonNext.jsx!'
 import Result from './Result.jsx!'
