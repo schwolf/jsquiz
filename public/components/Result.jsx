@@ -8,17 +8,23 @@ export default class Result extends React.Component {
 	}
 	
 	calculateCssClass() {
-		if (this.props.currentQuiz.asserts.every(function (assert) { return assert.result === undefined;})) {
-			return "visibility-hidden";
-		}
-		
 		if (this.completelySolved()) {
 			return "alert alert-success";
 		}
-		return "alert alert-danger";
+		
+		if (this.props.currentQuiz.errorMessage || !this.props.currentQuiz.asserts.every(function (assert) { return assert.result === undefined;})) {
+			return "alert alert-danger";
+		}
+		
+		return "visibility-hidden";
 	}
 	
 	calculateMessage() {
+		if (this.props.currentQuiz.errorMessage) {
+			return { __html: this.props.currentQuiz.errorMessage };
+		}
+		
+		
 		if (this.completelySolved()) {
 			return { __html: "Well done!<br/>Key takeaway: " + this.props.currentQuiz.takeaway };
 		}

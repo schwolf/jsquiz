@@ -25,6 +25,7 @@ class Quiz {
 			this.asserts.forEach(function (assert) {
 				assert.result = undefined;
 			});
+			this.errorMessage = undefined;
 		}
 	}
 	

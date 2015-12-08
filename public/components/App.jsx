@@ -44,15 +44,16 @@ export default class App extends React.Component {
 		this.state.currentQuiz.resetResults();
 		var myCode = this.myCodeComponent.getCode(),
 			testCode = this.state.currentQuiz.getActAndAsserts();
-		//try {
+		try {
 			var func = new Function('assert', myCode + ";" + testCode);
             func(this.assert);
+        } catch (e) {
+        	this.state.currentQuiz.errorMessage = e.message;
+        } finally {
 			// set the new state, see https://facebook.github.io/react/docs/component-api.html
 			this.updateState();
-        //} catch (e) {
-                // set error to a string
-                // todo WS error = e.message;
-        //}
+		}
+		
 	}
 	
 	onReset() {
@@ -67,6 +68,7 @@ export default class App extends React.Component {
 			return;
 		}
 		
+		this.state.currentQuiz.resetResults();
 		this.state.currentQuiz = this.props.quizzes[newIndex];
 		this.updateState();
 	}
