@@ -12,7 +12,7 @@ export default class ButtonRun extends React.Component {
 	
 	render() {
 		return (
-			<button className="btn btn-success" type="button" onClick={this.onClicked}>Run</button>
+			<button className="btn btn-primary" type="button" onClick={this.onClicked}>Run</button>
 		);
 	}
 	

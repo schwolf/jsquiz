@@ -55,6 +55,22 @@ export default [new Quiz('Write a function that merges the properties of an arbi
 			code: "assert(result === foo.bar);"
 		}],
 		"Using 'method invocation' the context is the object to which the function directly belongs. This is 'bar' in our case - not 'foo'!"
-		)];
+		),
+		new Quiz("Extend the function produceTunedCar in a way that it returns the car tuned by the tuner function without binding the function.",
+		"function produceTunedCar(car, tuner) { \n\ttuner.call(car, 'tuned by ABT', 40)\n\treturn car;\n}",
+		"var result = produceTunedCar({ type: 'Audi TT', horsePower: 200 }, \n\tfunction(typeExtension, horsePowerToAdd) { this.type = this.type + ' ' + typeExtension; this.horsePower += horsePowerToAdd; });",
+		[{
+            index: 0,
+            code: "assert(result.type === 'Audi TT tuned by ABT')",
+            msg: 'make has been extended with the type'
+        },
+        {
+            index: 0,
+            code: "assert(result.horsePower === 240)",
+            msg: 'has more power now'
+
+        }],
+"the apply invocation pattern can be used when you have a function available, e.g. one that was passed as an argument to your function. It makes use of the fact that apply and call are methods on the Function prototype and thus are available for every function. Both take the context as the first parameter, followed by a comma separated list of other parameters for call and an array for apply.")
+		];
 	
 	

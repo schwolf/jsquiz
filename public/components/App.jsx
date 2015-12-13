@@ -5,8 +5,7 @@ import Explantion from './Explantion.jsx!'
 import AceEditor from './AceEditor.jsx!'
 import ButtonRun from './ButtonRun.jsx!'
 import ButtonReset from './ButtonReset.jsx!'
-import ButtonPrev from './ButtonPrev.jsx!'
-import ButtonNext from './ButtonNext.jsx!'
+import ButtonNav from './ButtonNav.jsx!'
 import Result from './Result.jsx!'
 import Quizzes from 'quizzes'
 
@@ -33,8 +32,8 @@ export default class App extends React.Component {
 				<AceEditor code={this.state.currentQuiz.initialCode} title="Your code" isReadOnly={false} id="bar" ref= {(ref) => this.myCodeComponent = ref}  /> {/* the MyCode editor gets a reference to be able to grab it's editor content later in onRun */}
 				<ButtonRun onRun={this.onRun} />
 				<ButtonReset onReset={this.onReset} />
-				<ButtonPrev onNav={this.onNav} />
-				<ButtonNext onNav={this.onNav} />
+				<ButtonNav onNav={this.onNav} isDisabled={ this.isFirstQuiz() } caption="Prev" step={ -1 } />
+				<ButtonNav onNav={this.onNav} isDisabled={ this.isLastQuiz() } caption="Next" step= { 1 } />
 				<Result currentQuiz={this.state.currentQuiz} />
 			</div>
 		);
@@ -42,24 +41,31 @@ export default class App extends React.Component {
 	
 	onRun() {
 		this.state.currentQuiz.resetResults();
-		var myCode = this.myCodeComponent.getCode(),
+		var userEditedCode = this.myCodeComponent.getCode(),
 			testCode = this.state.currentQuiz.getActAndAsserts();
 		try {
-			var func = new Function('assert', myCode + ";" + testCode);
+			var func = new Function('assert', userEditedCode + ";" + testCode);
             func(this.assert);
         } catch (e) {
         	this.state.currentQuiz.errorMessage = e.message;
         } finally {
 			// set the new state, see https://facebook.github.io/react/docs/component-api.html
+			this.state.currentQuiz.initialCode = userEditedCode; // note that initialCode is perhaps not the best name for the property
 			this.updateState();
 		}
-		
 	}
 	
 	onReset() {
 		this.state.currentQuiz.resetResults();
 		this.updateState();
 	}
+	
+	 isFirstQuiz() {
+		 return this.props.quizzes.indexOf(this.state.currentQuiz) === 0;
+	 }
+	 isLastQuiz() {
+		 return this.props.quizzes.indexOf(this.state.currentQuiz) === this.props.quizzes.length - 1;
+	 }
 	
 	onNav(step) {
 		var currentIndex = this.props.quizzes.indexOf(this.state.currentQuiz),
@@ -73,7 +79,7 @@ export default class App extends React.Component {
 		this.updateState();
 	}
 	
-	updateState() {
+	updateState(userEditedCode) {
 		this.setState({ currentQuiz: this.state.currentQuiz });
 	}
 	

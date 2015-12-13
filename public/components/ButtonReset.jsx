@@ -10,7 +10,7 @@ export default class ButtonReset extends React.Component {
 	
 	render() {
 		return (
-			<button className="btn btn-success" type="button" onClick={this.onClicked}>Reset</button>
+			<button className="btn btn-default" type="button" onClick={this.onClicked}>Reset</button>
 		);
 	}
 	
