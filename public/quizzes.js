@@ -57,16 +57,23 @@ export default [
 	),
 	new Quiz("Extend the function produceTunedCar in a way that it returns the car tuned by the tuner function without binding the function.",
 		"function produceTunedCar(car, tuner) { \n\ttuner.call(car, 'tuned by ABT', 40)\n\treturn car;\n}",
-		"var result = produceTunedCar({ type: 'Audi TT', horsePower: 200 }, \n\tfunction(typeExtension, horsePowerToAdd) { this.type = this.type + ' ' + typeExtension; this.horsePower += horsePowerToAdd; });", [{         
-			index: 0,
-			         code: "assert(result.type === 'Audi TT tuned by ABT')",
-			         msg: 'make has been extended with the type'      
+		"var result = produceTunedCar({ type: 'Audi TT', horsePower: 200 }, \n\tfunction(typeExtension, horsePowerToAdd) { this.type = this.type + ' ' + typeExtension; this.horsePower += horsePowerToAdd; });", [{
+			code: "assert(result.type === 'Audi TT tuned by ABT')",
+			msg: 'make has been extended with the type'      
 		},        {         
-			index: 0,
-			         code: "assert(result.horsePower === 240)",
-			         msg: 'has more power now'
-
-			      
+			code: "assert(result.horsePower === 240)",
+			msg: 'has more power now'
 		}],
-		"the apply invocation pattern can be used when you have a function available, e.g. one that was passed as an argument to your function. It makes use of the fact that apply and call are methods on the Function prototype and thus are available for every function. Both take the context as the first parameter, followed by a comma separated list of other parameters for call and an array for apply.")
+		"the apply invocation pattern can be used when you have a function available, e.g. one that was passed as an argument to your function. It makes use of the fact that apply and call are methods on the Function prototype and thus are available for every function. Both take the context as the first parameter, followed by a comma separated list of other parameters for call and an array for apply."),
+	new Quiz("Extend the function produceTunedCar so that it returns the car tuned by the tuner function, but avoid the apply invocation pattern.",
+		"function produceTunedCar(car, tuner) { \n\ttuner = tuner.bind(car);\n\ttuner('tuned by ABT', 40)\n\treturn car;\n}",
+		"var result = produceTunedCar({ type: 'Audi TT', horsePower: 200 }, \n\tfunction(typeExtension, horsePowerToAdd) { this.type = this.type + ' ' + typeExtension; this.horsePower += horsePowerToAdd; });",
+		 [{
+			code: "assert(result.type === 'Audi TT tuned by ABT')",
+			msg: 'make has been extended with the type'
+		 },{
+		 	code: "assert(result.horsePower === 240)",
+		 	msg: 'has more power now'
+		 }],
+		 "Function prototype's bind function (introduced with ES5) takes care that the context points to the first argument with which bind was called. Note that once a function has been bound, they do not care how they have are called (e.g. with the apply invocation pattern): the context is always the one determined by the binding. Single exception is the constructor invocation pattern.")
 ];
