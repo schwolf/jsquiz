@@ -12,8 +12,12 @@ import Quizzes from 'quizzes'
 export default class App extends React.Component {
 	constructor(props) {
 		super(props);
+		
+		const fragment = window.location.hash.substr(1),
+			quizIndex = isNaN(fragment) ? 0 : parseInt(fragment, 10);
+		
 		this.state = {
-			currentQuiz: this.props.quizzes[0]
+			currentQuiz: this.props.quizzes[quizIndex];
 		}
 		
 		// event handlers have to be bound to the object, see http://reactkungfu.com/2015/07/why-and-how-to-bind-methods-in-your-react-component-classes/
@@ -73,7 +77,7 @@ export default class App extends React.Component {
 		if (newIndex < 0 || newIndex >= this.props.quizzes.length) {
 			return;
 		}
-		
+		window.location.hash = newIndex;
 		this.state.currentQuiz.resetResults();
 		this.state.currentQuiz = this.props.quizzes[newIndex];
 		this.updateState();
