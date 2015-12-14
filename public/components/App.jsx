@@ -13,11 +13,11 @@ export default class App extends React.Component {
 	constructor(props) {
 		super(props);
 		
-		const fragment = window.location.hash.substr(1),
+		const fragment = "0" + window.location.hash.substr(1), // "0" prefixed because isNaN("") === false in js
 			quizIndex = isNaN(fragment) ? 0 : parseInt(fragment, 10);
 		
 		this.state = {
-			currentQuiz: this.props.quizzes[quizIndex];
+			currentQuiz: this.props.quizzes[quizIndex]
 		}
 		
 		// event handlers have to be bound to the object, see http://reactkungfu.com/2015/07/why-and-how-to-bind-methods-in-your-react-component-classes/

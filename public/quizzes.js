@@ -67,7 +67,7 @@ export default [
 		}, {
 			code: 'assert(myCorrectGreeter.greet() === "Hello World!");',
 			msg: "greet is an instance method on the instanciated object"
-		},
+		}],
 		"note the following when using the 'Constructor invocation pattern':\n-  make sure not to forget the new keyword so that the this points to an empty object, otherwise properties and functions will get part of the global object and the instance will be undefined\n- this can be enforced by adding guards like 'if (!(this instanceof arguments.callee)) return new Greeter();'\n- constructor functions will implicitely return the object even without 'return this' at the end of the function."),
 	new Quiz("Extend the function produceTunedCar in a way that it returns the car tuned by the tuner function without binding the function.",
 		"function produceTunedCar(car, tuner) { \n\ttuner.call(car, 'tuned by ABT', 40)\n\treturn car;\n}",
@@ -89,5 +89,5 @@ export default [
 		 	code: "assert(result.horsePower === 240)",
 		 	msg: 'has more power now'
 		 }],
-		 "Function prototype's bind function (introduced with ES5) takes care that the context points to the first argument with which bind was called. Note that once a function has been bound, they do not care how they have are called (e.g. with the apply invocation pattern): the context is always the one determined by the binding. Single exception is the constructor invocation pattern.")
-];
+		 "Function prototype's bind function (introduced with ES5) takes care that the context points to the first argument with which bind was called. Note that once a function has been bound, they do not care how they have are called (e.g. with the apply invocation pattern): the context is always the one determined by the binding. Single exception is the constructor invocation pattern."
+		 )]
