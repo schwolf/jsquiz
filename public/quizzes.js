@@ -55,6 +55,20 @@ export default [
 		}],
 		"Using 'method invocation' the context is the object to which the function directly belongs. This is 'bar' in our case - not 'foo'!"
 	),
+	new Quiz("Create a constructor function 'Greeter' containing a 'greet' function that returns the string 'Hello World!'",
+		"function Greeter() {\n\tthis.greet = function() {\n\t\treturn 'Hello World!';\n\t}\n}",
+		"var myWrongGreeter = Greeter();\nvar myCorrectGreeter = new Greeter();",
+		[{
+			code: 'assert(myWrongGreeter === undefined);',
+			msg: 'myWrongGreeter is undefined instead of an instance of Greeter'
+		}, {
+			code: 'assert(window.greet() === "Hello World!");',
+			msg: 'greet is a function on the global object'
+		}, {
+			code: 'assert(myCorrectGreeter.greet() === "Hello World!");',
+			msg: "greet is an instance method on the instanciated object"
+		},
+		"note the following when using the 'Constructor invocation pattern':\n-  make sure not to forget the new keyword so that the this points to an empty object, otherwise properties and functions will get part of the global object and the instance will be undefined\n- this can be enforced by adding guards like 'if (!(this instanceof arguments.callee)) return new Greeter();'\n- constructor functions will implicitely return the object even without 'return this' at the end of the function."),
 	new Quiz("Extend the function produceTunedCar in a way that it returns the car tuned by the tuner function without binding the function.",
 		"function produceTunedCar(car, tuner) { \n\ttuner.call(car, 'tuned by ABT', 40)\n\treturn car;\n}",
 		"var result = produceTunedCar({ type: 'Audi TT', horsePower: 200 }, \n\tfunction(typeExtension, horsePowerToAdd) { this.type = this.type + ' ' + typeExtension; this.horsePower += horsePowerToAdd; });", [{
