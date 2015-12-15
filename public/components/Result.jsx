@@ -12,7 +12,7 @@ export default class Result extends React.Component {
 			return "alert alert-success";
 		}
 		
-		if (this.props.currentQuiz.errorMessage || !this.props.currentQuiz.asserts.every(function (assert) { return assert.result === undefined;})) {
+		if (this.props.errorMessage.length > 0 || this.props.results.length > 0) {
 			return "alert alert-danger";
 		}
 		
@@ -20,21 +20,21 @@ export default class Result extends React.Component {
 	}
 	
 	calculateMessage() {
-		if (this.props.currentQuiz.errorMessage) {
-			return { __html: this.props.currentQuiz.errorMessage };
+		if (this.props.errorMessage.length > 0) {
+			return { __html: this.props.errorMessage };
 		}
 		
 		
 		if (this.completelySolved()) {
-			return { __html: "Well done!<br/>Key takeaway: " + this.props.currentQuiz.takeaway };
+			return { __html: "Well done!<br/>Key takeaway: " + this.props.takeaway };
 		}
 		
-		var wrongAsserts = this.props.currentQuiz.asserts.filter(function (assert) { return assert.result === false;})
+		var wrongAsserts = this.props.results.filter(function (result) { return result === false;})
 		
 		return { __html: wrongAsserts.length + " assert(s) not yet ok." };
 	}
 	
 	completelySolved() {
-		return this.props.currentQuiz.asserts.every(function (assert) { return assert.result === true;})
+		return this.props.results.length > 0 && this.props.results.every(function (result) { return result;})
 	}
 }

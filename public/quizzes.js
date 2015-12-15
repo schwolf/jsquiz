@@ -8,25 +8,18 @@ class Quiz {
 		this.asserts = asserts;
 		this.takeaway = takeaway;
 	}
-	getActAndAsserts() {
+	getActAndAsserts(results) {
 		var actAndAsserts = this.act + "\n",
 			flag;
 
-		this.asserts.forEach(function(assert) {
+		this.asserts.forEach(function(assert, index) {
 			actAndAsserts += "\n" + assert.code;
-			if (assert.result !== undefined) {
-				flag = assert.result ? "ok" : "nok";
+			if (results !== undefined && index < results.length) {
+				flag = results[index] ? "ok" : "nok";
 				actAndAsserts += " // " + flag;
 			}
 		});
 		return actAndAsserts;
-	}
-
-	resetResults() {
-		this.asserts.forEach(function(assert) {
-			assert.result = undefined;
-		});
-		this.errorMessage = undefined;
 	}
 }
 

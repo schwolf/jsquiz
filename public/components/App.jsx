@@ -17,7 +17,9 @@ export default class App extends React.Component {
 			quizIndex = isNaN(fragment) ? 0 : parseInt(fragment, 10);
 		
 		this.state = {
-			currentQuiz: this.props.quizzes[quizIndex]
+			quizIndex: quizIndex,
+			results: [],
+			errorMessage: ''
 		}
 		
 		// event handlers have to be bound to the object, see http://reactkungfu.com/2015/07/why-and-how-to-bind-methods-in-your-react-component-classes/
@@ -29,73 +31,69 @@ export default class App extends React.Component {
 	}
 	
 	render() {
+		let currentQuiz = this.props.quizzes[this.state.quizIndex];
 		return (
 			<div>
-				<Explantion content={this.state.currentQuiz.explanation} quizNumber={ this.props.quizzes.indexOf(this.state.currentQuiz) + 1 }/>
-				<AceEditor code={this.state.currentQuiz.getActAndAsserts()} title="Test code" isReadOnly= {true} id="foo" />
-				<AceEditor code={this.state.currentQuiz.initialCode} title="Your code" isReadOnly={false} id="bar" ref= {(ref) => this.myCodeComponent = ref}  /> {/* the MyCode editor gets a reference to be able to grab it's editor content later in onRun */}
+				<Explantion content={currentQuiz.explanation} quizNumber={ this.state.quizIndex + 1 }/>
+				<AceEditor code={currentQuiz.getActAndAsserts(this.state.results)} title="Test code" isReadOnly= {true} id="foo" />
+				<AceEditor code={currentQuiz.initialCode} title="Your code" isReadOnly={false} id="bar" ref= {(ref) => this.myCodeComponent = ref}  /> {/* the MyCode editor gets a reference to be able to grab it's editor content later in onRun */}
 				<ButtonRun onRun={this.onRun} />
 				<ButtonReset onReset={this.onReset} />
 				<ButtonNav onNav={this.onNav} isDisabled={ this.isFirstQuiz() } caption="Prev" step={ -1 } />
 				<ButtonNav onNav={this.onNav} isDisabled={ this.isLastQuiz() } caption="Next" step= { 1 } />
-				<Result currentQuiz={this.state.currentQuiz} />
+				<Result results={this.state.results} takeaway={currentQuiz.takeaway} errorMessage={this.state.errorMessage} />
 			</div>
 		);
 	}
 	
 	onRun() {
-		this.state.currentQuiz.resetResults();
+		this.state.results = [];
+		this.state.errorMessage = "";
 		var userEditedCode = this.myCodeComponent.getCode(),
-			testCode = this.state.currentQuiz.getActAndAsserts();
+			testCode = this.props.quizzes[this.state.quizIndex].getActAndAsserts();
 		try {
 			var func = new Function('assert', userEditedCode + ";" + testCode);
             func(this.assert);
         } catch (e) {
-        	this.state.currentQuiz.errorMessage = e.message;
+        	this.state.errorMessage = e.message;
         } finally {
-			// set the new state, see https://facebook.github.io/react/docs/component-api.html
-			this.state.currentQuiz.initialCode = userEditedCode; // note that initialCode is perhaps not the best name for the property
 			this.updateState();
 		}
 	}
 	
 	onReset() {
-		this.state.currentQuiz.resetResults();
+		this.state.results = [];
+		this.state.errorMessage = "";
 		this.updateState();
+		// myCode will be set manually:
+		this.myCodeComponent.forceUpdate();
+		
 	}
 	
 	 isFirstQuiz() {
-		 return this.props.quizzes.indexOf(this.state.currentQuiz) === 0;
+		 return this.state.quizIndex === 0;
 	 }
 	 isLastQuiz() {
-		 return this.props.quizzes.indexOf(this.state.currentQuiz) === this.props.quizzes.length - 1;
+		 return this.state.quizIndex === this.props.quizzes.length - 1;
 	 }
 	
 	onNav(step) {
-		var currentIndex = this.props.quizzes.indexOf(this.state.currentQuiz),
-			newIndex = currentIndex + step;
+		var newIndex = this.state.quizIndex + step;
 		if (newIndex < 0 || newIndex >= this.props.quizzes.length) {
 			return;
 		}
 		window.location.hash = newIndex;
-		this.state.currentQuiz.resetResults();
-		this.state.currentQuiz = this.props.quizzes[newIndex];
-		this.updateState();
+		this.state.quizIndex = newIndex;
+		this.onReset();
 	}
 	
-	updateState(userEditedCode) {
-		this.setState({ currentQuiz: this.state.currentQuiz });
+	updateState() {
+		this.setState({ quizIndex: this.state.quizIndex, results: this.state.results, errorMessage: this.state.errorMessage });
 	}
 	
 	assert(isCorrect) {
-		var i, a;
-		for (i = 0; i < this.state.currentQuiz.asserts.length; i++) {
-			a = this.state.currentQuiz.asserts[i];
-			if (a.result === undefined) {
-                a.result = isCorrect;
-                break;
-			}
-		}
+		// simply extend the result array
+		this.state.results.push(isCorrect);
 	}
 }
 

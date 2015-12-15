@@ -22,6 +22,10 @@ export default class AceEditor extends React.Component {
                 
 				this.setValue();
   	}
+	  
+	shouldComponentUpdate(nextProps, nextState) {
+  		return this.props.isReadOnly; // myCode never updates automatically
+	}
 	
 	componentDidUpdate() {
 		this.setValue();
