@@ -23,9 +23,9 @@ export default class App extends React.Component {
 		}
 		
 		// event handlers have to be bound to the object, see http://reactkungfu.com/2015/07/why-and-how-to-bind-methods-in-your-react-component-classes/
-		this.onRun = this.onRun.bind(this);
-		this.onReset = this.onReset.bind(this);
-		this.onNav = this.onNav.bind(this);
+		this.handleRun = this.handleRun.bind(this);
+		this.handleReset = this.handleReset.bind(this);
+		this.handleNav = this.handleNav.bind(this);
 		
 		this.assert = this.assert.bind(this);
 	}
@@ -36,17 +36,17 @@ export default class App extends React.Component {
 			<div>
 				<Explantion content={currentQuiz.explanation} quizNumber={ this.state.quizIndex + 1 }/>
 				<AceEditor code={currentQuiz.getActAndAsserts(this.state.results)} title="Test code" isReadOnly= {true} id="foo" />
-				<AceEditor code={currentQuiz.initialCode} title="Your code" isReadOnly={false} id="bar" ref= {(ref) => this.myCodeComponent = ref}  /> {/* the MyCode editor gets a reference to be able to grab it's editor content later in onRun */}
-				<ButtonRun onRun={this.onRun} />
-				<ButtonReset onReset={this.onReset} />
-				<ButtonNav onNav={this.onNav} isDisabled={ this.isFirstQuiz() } caption="Prev" step={ -1 } />
-				<ButtonNav onNav={this.onNav} isDisabled={ this.isLastQuiz() } caption="Next" step= { 1 } />
+				<AceEditor code={currentQuiz.initialCode} title="Your code" isReadOnly={false} id="bar" ref= {(ref) => this.myCodeComponent = ref}  /> {/* the MyCode editor gets a reference to be able to grab it's editor content later in handleRun */}
+				<ButtonRun onRun={this.handleRun} />
+				<ButtonReset onReset={this.handleReset} />
+				<ButtonNav onNav={this.handleNav} isDisabled={ this.isFirstQuiz() } caption="Prev" step={ -1 } />
+				<ButtonNav onNav={this.handleNav} isDisabled={ this.isLastQuiz() } caption="Next" step= { 1 } />
 				<Result results={this.state.results} takeaway={currentQuiz.takeaway} errorMessage={this.state.errorMessage} />
 			</div>
 		);
 	}
 	
-	onRun() {
+	handleRun() {
 		this.state.results = [];
 		this.state.errorMessage = "";
 		var userEditedCode = this.myCodeComponent.getCode(),
@@ -61,7 +61,7 @@ export default class App extends React.Component {
 		}
 	}
 	
-	onReset() {
+	handleReset() {
 		this.state.results = [];
 		this.state.errorMessage = "";
 		this.updateState();
@@ -77,14 +77,14 @@ export default class App extends React.Component {
 		 return this.state.quizIndex === this.props.quizzes.length - 1;
 	 }
 	
-	onNav(step) {
+	handleNav(step) {
 		var newIndex = this.state.quizIndex + step;
 		if (newIndex < 0 || newIndex >= this.props.quizzes.length) {
 			return;
 		}
 		window.location.hash = newIndex;
 		this.state.quizIndex = newIndex;
-		this.onReset();
+		this.handleReset();
 	}
 	
 	updateState() {
