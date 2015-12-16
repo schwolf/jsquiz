@@ -7,6 +7,5 @@ Technology stack:
 - html5, css3
 - vanilla ES2015
 - twitter bootstrap
-- react
-- redux
+- react and redux (which might be a bit over-engineered for this tiny application, but it is a nice playground...)
 - npm, jspm
