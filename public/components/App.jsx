@@ -13,8 +13,8 @@ export default class App extends React.Component {
 	constructor(props) {
 		super(props);
 		
-		const fragment = "0" + window.location.hash.substr(1), // "0" prefixed because isNaN("") === false in js
-			quizIndex = isNaN(fragment) ? 0 : parseInt(fragment, 10);
+		const fragment = Number(window.location.hash.substr(1));
+		const quizIndex = isNaN(fragment) ? 0 : parseInt(fragment, 10);
 		
 		this.state = {
 			quizIndex: quizIndex,
